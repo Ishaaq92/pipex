@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:50:44 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 15:24:04 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/10/14 16:35:28 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,13 @@ typedef struct s_data
 	char	*file2;
 	char	*cmd1;
 	char	*cmd2;
+	char	*cmd1_path;
+	char	*cmd2_path;
 	char	**paths;
+	char	**envp;
 }	t_data;
 
+void	execute_cmd(t_data *data);
 void	ft_quit(t_data *data);
 char	**set_paths(char **envp);
 void	init_data(t_data *data, char **av, char **envp);

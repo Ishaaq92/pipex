@@ -1,31 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 15:00:33 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 19:13:21 by ishaaq           ###   ########.fr       */
+/*   Created: 2025/10/14 15:37:02 by ishaaq            #+#    #+#             */
+/*   Updated: 2025/10/14 16:39:18 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_quit(t_data *data)
+void	execute_cmd(t_data *data)
 {
-	int		i;
-	char	**paths;
-
-	paths = data->paths;
-	i = -1;
-	while (paths[++i] != 0)
-		free(paths[i]);
-	free(paths);
-	free(data->file1);
-	free(data->file2);
-	free(data->cmd1);
-	free(data->cmd2);
-	free(data->cmd1_path);
-	free(data->cmd2_path);
+	printf("%s", data->cmd1_path);
+	printf("%s", data->cmd2_path);
 }

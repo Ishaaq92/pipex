@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:59:29 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 15:33:51 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/10/14 19:14:22 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,34 @@ char	**set_paths(char **envp)
 	return (paths);
 }
 
+int	check_access(t_data *data, char *path)
+{
+	char	*tmp;
+	int		count;
+
+	count = 0;
+	tmp = ft_strjoin(path, data->cmd1);
+	if (access(tmp, 0) == 0)
+	{
+		data->cmd1_path = tmp;
+		// printf("%s\n", data->cmd1_path);
+		count ++;
+	}
+	else
+		free(tmp);
+	tmp = ft_strjoin(path, data->cmd2);
+	if (access(tmp, 0) == 0)
+	{
+		data->cmd2_path = tmp;
+		count ++;
+	}
+	else
+		free(tmp);
+	return (count);
+}
+
 int	validate_cmds(t_data *data)
 {
-	char	*tmp1;
-	char	*tmp2;
 	char	**paths;
 	int		i;
 	int		count;
@@ -45,17 +69,8 @@ int	validate_cmds(t_data *data)
 	i = -1;
 	paths = data->paths;
 	count = 0;
-	while (paths[++i] != 0)
-	{
-		tmp1 = ft_strjoin(paths[i], data->cmd1);
-		tmp2 = ft_strjoin(paths[i], data->cmd2);
-		if (access(tmp1, 0) == 0)
-			count ++;
-		if (access(tmp2, 0) == 0)
-			count ++;
-		free(tmp1);
-		free(tmp2);
-	}
+	while (paths[++i] != 0 && count != 2)
+		count += check_access(data, paths[i]);
 	if (count != 2)
 		return (write(2, "Bad command path(s)\n", 12), exit(1), 1);
 	return (0);
@@ -71,5 +86,7 @@ void	init_data(t_data *data, char **av, char **envp)
 	data->cmd1 = ft_strdup(av[2]);
 	data->cmd2 = ft_strdup(av[3]);
 	data->paths = set_paths(envp);
+	data->cmd1_path = NULL;
+	data->cmd2_path = NULL;
 	validate_cmds(data);
 }
