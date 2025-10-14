@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror  -g 
-SRCS = pipex.c
+SRCS = pipex.c init.c utils.c
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 BINARY = pipex
 LIBFT = libft.a
@@ -11,10 +11,10 @@ $(BINARY): $(OBJS) Libft/$(LIBFT)
 	$(CC) $(CFLAGS) -o $(BINARY) $(OBJS) Libft/$(LIBFT)
 
 Libft/$(LIBFT): $(LIBFT)
-	make -C Libft/
+	@make -C Libft/
 
 $(LIBFT):
-	git submodule update --init --recursive
+	@git submodule update --init --recursive
 
 clean:
 	rm -rf $(OBJS)

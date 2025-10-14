@@ -1,36 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 14:50:44 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 15:24:04 by ishaaq           ###   ########.fr       */
+/*   Created: 2025/10/14 15:00:33 by ishaaq            #+#    #+#             */
+/*   Updated: 2025/10/14 15:01:09 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <string.h>
-# include "Libft/libft.h"
-
-typedef struct s_data
+void	ft_quit(t_data *data)
 {
-	char	*file1;
-	char	*file2;
-	char	*cmd1;
-	char	*cmd2;
+	int		i;
 	char	**paths;
-}	t_data;
 
-void	ft_quit(t_data *data);
-char	**set_paths(char **envp);
-void	init_data(t_data *data, char **av, char **envp);
-int		validate_cmds(t_data *data);
-
-#endif
+	paths = data->paths;
+	i = -1;
+	while (paths[++i] != 0)
+		free(paths[i]);
+	free(paths);
+	free(data->file1);
+	free(data->file2);
+	free(data->cmd1);
+	free(data->cmd2);
+}
