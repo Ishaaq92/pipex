@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:50:44 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 16:35:28 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/10/14 19:27:49 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_data
 	char	**envp;
 }	t_data;
 
-void	execute_cmd(t_data *data);
+int		execute_cmd(t_data *data);
 void	ft_quit(t_data *data);
 char	**set_paths(char **envp);
 void	init_data(t_data *data, char **av, char **envp);

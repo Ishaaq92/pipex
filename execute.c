@@ -6,14 +6,19 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:37:02 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 16:39:18 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/10/14 19:31:27 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	execute_cmd(t_data *data)
+int	execute_cmd(t_data *data)
 {
-	printf("%s", data->cmd1_path);
-	printf("%s", data->cmd2_path);
+	char	*av[] = {"a.out", NULL};
+
+	// if (fork() != 0)
+	// 	return ;
+	if (execve(data->cmd1_path, av, data->envp) == -1)
+		return (write(2, "Error\n", 6), 0);
+	return (1);
 }
