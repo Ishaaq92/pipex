@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:59:29 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 19:14:22 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/11/30 20:17:01 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,59 +34,65 @@ char	**set_paths(char **envp)
 	return (paths);
 }
 
-int	check_access(t_data *data, char *path)
+int	check_access(t_cmd *cmd, char *path)
 {
 	char	*tmp;
-	int		count;
 
-	count = 0;
-	tmp = ft_strjoin(path, data->cmd1);
+	tmp = ft_strjoin(path, cmd->cmd);
 	if (access(tmp, 0) == 0)
 	{
-		data->cmd1_path = tmp;
-		// printf("%s\n", data->cmd1_path);
-		count ++;
+		cmd->path = tmp;
+		return (1);
 	}
 	else
 		free(tmp);
-	tmp = ft_strjoin(path, data->cmd2);
-	if (access(tmp, 0) == 0)
-	{
-		data->cmd2_path = tmp;
-		count ++;
-	}
-	else
-		free(tmp);
-	return (count);
+	return (0);
 }
 
 int	validate_cmds(t_data *data)
 {
-	char	**paths;
-	int		i;
 	int		count;
+	int		i;
+	char	**paths;
 
 	i = -1;
-	paths = data->paths;
 	count = 0;
+	paths = data->paths;
 	while (paths[++i] != 0 && count != 2)
-		count += check_access(data, paths[i]);
+	{
+		count += check_access(data->cmd1, paths[i]);
+		count += check_access(data->cmd2, paths[i]);
+	}
 	if (count != 2)
 		return (write(2, "Bad command path(s)\n", 12), exit(1), 1);
 	return (0);
 }
 
+t_cmd	*init_cmd(char *full_cmd)
+{
+	char	**options_lst;
+	t_cmd	*cmd;
+	char	*tmp;
+
+	cmd = malloc(sizeof(t_cmd));
+	options_lst = ft_split(full_cmd, ' ');
+	tmp = options_lst[0];
+	options_lst[0] = ft_strdup("a.out");
+	cmd->options = options_lst;
+	cmd->cmd = tmp;
+	return (cmd);
+}
+
 void	init_data(t_data *data, char **av, char **envp)
 {
-	// Checking if the files exist
 	if (access(av[1], 0) != 0 || access(av[4], 0) != 0)
 		return (write(2, "Bad paths\n", 12), exit(1));
 	data->file1 = ft_strdup(av[1]);
 	data->file2 = ft_strdup(av[4]);
-	data->cmd1 = ft_strdup(av[2]);
-	data->cmd2 = ft_strdup(av[3]);
+
+	data->cmd1 = init_cmd(av[2]);
+	data->cmd2 = init_cmd(av[3]);
+
 	data->paths = set_paths(envp);
-	data->cmd1_path = NULL;
-	data->cmd2_path = NULL;
 	validate_cmds(data);
 }

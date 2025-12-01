@@ -1,38 +1,42 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/10/14 16:35:40 by ishaaq            #+#    #+#              #
-#    Updated: 2025/10/14 19:08:19 by ishaaq           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME        = pipex
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror -I inc -I Libft
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror  -g3
-SRCS = pipex.c init.c utils.c execute.c
-OBJS = $(patsubst %.c, %.o, $(SRCS))
-BINARY = pipex
-LIBFT = libft.a
+SRCS_FILES  = pipex.c init.c utils.c execute.c
+SDIR        = srcs
+ODIR        = objs
 
-all : $(BINARY)
+# 1. Use addprefix to correctly locate source files and objects
+SRCS        = $(addprefix $(SDIR)/, $(SRCS_FILES))
+OBJS        = $(addprefix $(ODIR)/, $(SRCS_FILES:.c=.o))
 
-$(BINARY): $(OBJS) Libft/$(LIBFT)
-	@$(CC) $(CFLAGS) -o $(BINARY) $(OBJS) Libft/$(LIBFT)
+LIBFT_DIR   = Libft
+LIBFT       = $(LIBFT_DIR)/libft.a
 
-Libft/$(LIBFT):
-	@echo "Checking/updating libft submodule..."
-	@git submodule update --init --recursive
-	@echo "Building libft..."
-	@make -C Libft/
+all: $(NAME)
+
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+
+$(OBJS): | $(ODIR)
+
+$(ODIR):
+	mkdir -p $(ODIR)
+
+# 2. Pattern rule to compile generic .c in SDIR to .o in ODIR
+$(ODIR)/%.o: $(SDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
 
 clean:
-	rm -rf $(OBJS)
+	rm -rf $(ODIR)
+	@make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -rf $(BINARY)
+	rm -f $(NAME)
+	@make -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

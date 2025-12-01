@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:50:44 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/10/14 19:27:49 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/11/30 20:17:01 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,21 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
-# include "Libft/libft.h"
+# include "../Libft/libft.h"
+
+typedef	struct	s_cmd
+{
+	char	*cmd;
+	char	**options;
+	char	*path;
+}		t_cmd;
 
 typedef struct s_data
 {
 	char	*file1;
 	char	*file2;
-	char	*cmd1;
-	char	*cmd2;
-	char	*cmd1_path;
-	char	*cmd2_path;
+	t_cmd	*cmd1;
+	t_cmd	*cmd2;
 	char	**paths;
 	char	**envp;
 }	t_data;
