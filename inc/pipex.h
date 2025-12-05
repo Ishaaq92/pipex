@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:50:44 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/11/30 20:17:01 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/12/05 18:43:31 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 # include <stdio.h>
+# include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
@@ -41,5 +42,6 @@ void	ft_quit(t_data *data);
 char	**set_paths(char **envp);
 void	init_data(t_data *data, char **av, char **envp);
 int		validate_cmds(t_data *data);
+char	**ft_arrappend(char **lst, char *item);
 
 #endif

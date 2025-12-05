@@ -6,40 +6,79 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:37:02 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/11/30 20:17:01 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/12/05 19:26:04 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	execute_cmd(t_data *data)
+int	execute_second_cmd(t_data *data)
 {
-	char	*av[] = {"a.out", NULL};
+	// char	*av[] = {"a.out", data->file1, NULL};
 	int		child;
-	int		fd[2];
-	char	text[8];
-
-	pipe(fd);
+	int fd;
+	
+	fd = open(data->file2, O_RDWR);
 	child = fork();
 	if (child == -1)
-		return (write(2, "Error\n", 6), 1);
+		return (write(2, "Error\n", 6), ft_quit(data), 1);
+	else if (child == 0)
+	{
+		dup2(fd, STDOUT_FILENO);
+		printf("heree");
+		if (execve(data->cmd2->path, data->cmd2->options, data->envp) == -1)
+			return (write(2, "Error\n", 6), ft_quit(data), 1);
+	}
+	printf("heree");
+	wait(NULL);
+	return (0);
+}
+
+int	append_to_file(t_data *data, char *buffer)
+{
+	int fd;
+	
+	fd = open(data->file1, O_RDWR);
+	if (fd < 0)
+		return (write(2, "Error\n", 6), ft_quit(data), 1);
+	write(fd, buffer, sizeof(buffer));
+	close(fd);
+	return (0);
+}
+
+int	execute_cmd(t_data *data)
+{
+	char	buffer[1024];
+	int		fd[2];
+	int		file1_fd;
+	int		child;
+
+	if (pipe(fd) == -1)
+		return (write(2, "Error\n", 6), ft_quit(data), 1);
+	child = fork();
+	if (child == -1)
+		return (write(2, "Error\n", 6), ft_quit(data), 1);
 	if (child == 0)
 	{
 		close(fd[0]);
-		write(fd[1], "test\n\0", 5);
-		printf("I think this is the child process\n");
-		if (execve(data->cmd1->path, av, data->envp) == -1)
-			return (write(2, "Error\n", 6), exit(1), 0);
+		file1_fd = open(data->file1, O_RDWR);
+		dup2(file1_fd, STDIN_FILENO);
+		close(file1_fd);
+		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
+		if (execve(data->cmd1->path, data->cmd1->options, data->envp) == -1)
+			return (write(2, "Error\n", 6), ft_quit(data), 1);
 	}
 	else
 	{
-		close(fd[1]);
-		read(fd[0], &text, 5);
+		printf("test");
 		wait(NULL);
-		printf("I think this is the parent process\n");
+		close(fd[1]);
+		read(fd[0], buffer, sizeof(buffer));
 		close(fd[0]);
 	}
-	printf("The string from the child process is %s\n", text);
-	return (1);
+	// append_to_file(data, buffer);
+	// execute_second_cmd(data);
+	return (0);
 }
+

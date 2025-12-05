@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:59:29 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/11/30 20:17:01 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/12/05 19:04:10 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,13 @@ t_cmd	*init_cmd(char *full_cmd)
 
 	cmd = malloc(sizeof(t_cmd));
 	options_lst = ft_split(full_cmd, ' ');
-	tmp = options_lst[0];
-	options_lst[0] = ft_strdup("a.out");
 	cmd->options = options_lst;
+	tmp = options_lst[0];
 	cmd->cmd = tmp;
+	int i = -1;
+	while (options_lst[++i])
+		printf("%s, ", options_lst[i]);
+	printf("\n");
 	return (cmd);
 }
 
