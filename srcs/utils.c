@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:00:33 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/12/05 18:49:26 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/12/05 20:33:07 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@ void	ft_quit(t_data *data)
 	free(data->cmd2->cmd);
 	free(data->cmd1->path);
 	free(data->cmd2->path);
+	i = 0;
+	while (data->cmd1->options[++i])
+		free(data->cmd1->options[i]);
+	free(data->cmd1->options);
+	i = 0;
+	while (data->cmd2->options[++i])
+		free(data->cmd2->options[i]);
+	free(data->cmd2->options);
 	free(data->cmd1);
 	free(data->cmd2);
 }

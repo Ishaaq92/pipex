@@ -6,7 +6,7 @@
 /*   By: ishaaq <ishaaq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:37:02 by ishaaq            #+#    #+#             */
-/*   Updated: 2025/12/05 20:17:04 by ishaaq           ###   ########.fr       */
+/*   Updated: 2025/12/05 20:18:38 by ishaaq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ int	execute_cmd(t_data *data)
 		dup2(file2_fd, STDOUT_FILENO);
 		if (execve(data->cmd2->path, data->cmd2->options, data->envp) == -1)
 			return (write(2, "Error\n", 6), ft_quit(data), 1);
-		// execute_second_cmd(data, fd[0]);
 	}
 	close(fd[1]);
 	close(fd[0]);
 	return (0);
 }
-
